@@ -15,7 +15,8 @@
     },
 
     "sort": {
-        "date": "createdAt"
+        "createdDate": "createdAt",
+        "updatedDate": "updatedAt"
     },
     "analytics" : {
         "hashedId" : {"field" : ""},
