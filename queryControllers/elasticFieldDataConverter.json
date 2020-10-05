@@ -1,0 +1,8 @@
+{
+    "image": "image",
+    "entityId": "entityId",
+    "metadata": "metadata",
+    "updatedAt": "updatedAt",
+    "algorithmName" : "algoritm.*.algorithmName",
+    "algorithmResult" : "algoritm.*.results"
+}
