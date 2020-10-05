@@ -12,7 +12,10 @@ const schemas = {
             endDate: Joi.date(),
             startDate: Joi.date()
         }),
-        sortedBy: Joi.valid(...['desc', 'asc']),
+        sort: Joi.object().keys({
+            dateType: Joi.valid(...['createdDate', 'updateDate']),
+            order:  Joi.valid(...['desc', 'asc'])
+        }),
         analytics: Joi.object().keys({
             hashedId:Joi.valid(...['have', 'notHave', 'ignore']),
             carRecognition: Joi.valid(...['have', 'notHave', 'ignore']),
