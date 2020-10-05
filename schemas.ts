@@ -21,7 +21,7 @@ const schemas = {
         }),
         match: Joi.object().keys({
             SensorId: Joi.array().items(Joi.string()),
-            cameraMode: Joi.array().valid(...['P1', 'P2', 'IR']),
+            cameraMode: Joi.array().items(Joi.valid(...['P1', 'P2', 'IR'])),
             hashedId: Joi.array().items(Joi.string()),
             lpr: Joi.array().items(Joi.string()),
             pictureId: Joi.array().items(Joi.string()),
