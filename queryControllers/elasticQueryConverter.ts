@@ -10,8 +10,8 @@ let boolQuery = esb.boolQuery();
 function AddQueryMatchFilter(bodyReq: JsonSchema) {
   bodyReq["match"] !== undefined ? Object.entries(bodyReq["match"]!).forEach(
     ([key, value]) => {
-      let esbQuery : esb.Query[] = new Array();
-      value!.forEach(valueElement=>{
+      let esbQuery: esb.Query[] = new Array();
+      value!.forEach(valueElement => {
         esbQuery.push(esb.matchQuery(dataConverter.match[key], valueElement));
       })
       boolQuery.must(esb.boolQuery().minimumShouldMatch(1).should(esbQuery));

@@ -16,10 +16,10 @@ const schemas = {
         }),
         sort: Joi.object().min(1).keys({
             dateType: Joi.valid(...['createdAt ', 'updatedAt']),
-            order:  Joi.valid(...['desc', 'asc'])
+            order: Joi.valid(...['desc', 'asc'])
         }),
         analytics: Joi.object().min(1).keys({
-            hashedId:Joi.valid(...['have', 'notHave', 'ignore']),
+            hashedId: Joi.valid(...['have', 'notHave', 'ignore']),
             carRecognition: Joi.valid(...['have', 'notHave', 'ignore']),
             withLpr: Joi.valid(...['have', 'notHave', 'ignore']),
             withoutLpr: Joi.valid(...['have', 'notHave', 'ignore'])
@@ -30,12 +30,12 @@ const schemas = {
             hashedId: Joi.array().items(Joi.string()),
             lpr: Joi.array().items(Joi.string()),
             pictureId: Joi.array().items(Joi.string()),
-            manufacturer:  Joi.array().items(Joi.string()),
-            model:  Joi.array().items(Joi.string()),
-            color:  Joi.array().items(Joi.string()),
-            year:  Joi.array().items(Joi.string()),
+            manufacturer: Joi.array().items(Joi.string()),
+            model: Joi.array().items(Joi.string()),
+            color: Joi.array().items(Joi.string()),
+            year: Joi.array().items(Joi.string()),
         })
-})
+    })
 };
 
 const schemasMiddleware = () => {
@@ -54,4 +54,4 @@ const schemasMiddleware = () => {
     }
 }
 
-export {schemasMiddleware}
+export { schemasMiddleware }
