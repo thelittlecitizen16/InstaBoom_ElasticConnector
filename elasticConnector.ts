@@ -5,7 +5,6 @@ var elasticsearch = require('elasticsearch')
 
 var client = new elasticsearch.Client({
   hosts: ['http://elastic:elkpass123456!@10.1.0.103:9200'],
-  log: 'trace',
   apiVersion: '7.x'
 })
 
