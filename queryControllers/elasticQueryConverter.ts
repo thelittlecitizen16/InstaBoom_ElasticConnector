@@ -3,6 +3,7 @@ import esb = require('elastic-builder');
 import { JsonSchema } from './jsonSchema'
 var dataConverter = require('./elasticQueryDataConverter');
 var elasticFields = require('./elasticFieldDataConverter');
+var config = require('../configuration/config.json')
 
 const requestBody = esb.requestBodySearch();
 let boolQuery = esb.boolQuery();
@@ -35,7 +36,7 @@ function AddQueryReturnFields(bodyReq: JsonSchema) {
     elasticFields[element] ? sourceIncludes.push(elasticFields[element]) : undefined;
   });
 
-  requestBody.source({ "includes": sourceIncludes, "excludes": ["algorithms.*.results.feature", "algorithms.*.results.landmarks"] });
+  requestBody.source({ "includes": sourceIncludes, "excludes": config.query.excludes });
 }
 
 function AddQueryRangeFilter(bodyReq: JsonSchema) {
