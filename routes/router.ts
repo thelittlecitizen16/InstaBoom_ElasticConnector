@@ -1,8 +1,8 @@
 import express = require('express');
 var router = express.Router();
 import { schemasMiddleware } from './schemas'
-import { CreateRequestBody } from './queryControllers/elasticQueryConverter'
-import { SearchElasticQuery, RemoveTtlFieldFromElastic } from './elasticConnector'
+import { CreateRequestBody } from '../queryControllers/elasticQueryConverter'
+import { SearchElasticQuery, RemoveTtlFieldFromElastic } from '../elasticControllers/elasticConnector'
 
 router.post('/search', schemasMiddleware(), (req, res) => {
     try {
