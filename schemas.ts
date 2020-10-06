@@ -10,8 +10,8 @@ const schemas = {
         fields: Joi.array().min(1).items(Joi.string()).required(),
         range: Joi.object().min(1).keys({
             date: Joi.object().min(1).keys({
-                endDate: Joi.date(),
-                startDate: Joi.date()
+                start: Joi.date(),
+                end: Joi.date()
             })
         }),
         sort: Joi.object().min(1).keys({
@@ -25,7 +25,7 @@ const schemas = {
             withoutLpr: Joi.valid(...['have', 'notHave', 'ignore'])
         }),
         match: Joi.object().min(1).keys({
-            SensorId: Joi.array().items(Joi.string()),
+            sensorId: Joi.array().items(Joi.string()),
             cameraMode: Joi.array().items(Joi.valid(...['P1', 'P2', 'IR'])),
             hashedId: Joi.array().items(Joi.string()),
             lpr: Joi.array().items(Joi.string()),

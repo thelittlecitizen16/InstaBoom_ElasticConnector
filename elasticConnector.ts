@@ -11,13 +11,9 @@ var client = new elasticsearch.Client({
 
 
 async function SearchElasticQuery(requestBody : esb.RequestBodySearch) {
-  client.search({
+    return  client.search({
     index: 'test_index_photos',
     body: requestBody.toJSON()
-  }).then(function (resp: any) {
-    console.log(resp);
-  }, function (err: { message: any; }) {
-    console.trace(err.message);
   });
 }
 
