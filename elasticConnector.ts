@@ -7,6 +7,16 @@ var client = new elasticsearch.Client({
     apiVersion: '7.x'
 })
 
+async function RemoveTtlFieldFromElastic(id: string) {
+    return client.updateByQuery({
+        index: 'test_index_photos',
+        body: {
+            "query": {"term": { "entityId.keyword": id  }},
+            "script": "ctx._source.remove('ttl')"
+        }
+    });
+}
+
 async function SearchElasticQuery(requestBody: esb.RequestBodySearch) {
     return client.search({
         index: 'test_index_photos',
@@ -14,4 +24,4 @@ async function SearchElasticQuery(requestBody: esb.RequestBodySearch) {
     });
 }
 
-export { SearchElasticQuery }
+export { SearchElasticQuery, RemoveTtlFieldFromElastic }

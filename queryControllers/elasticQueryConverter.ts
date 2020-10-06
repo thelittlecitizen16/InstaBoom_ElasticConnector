@@ -61,8 +61,6 @@ function AddQuerySortFilter(bodyReq: JsonSchema) {
   }
 }
 
-
-
 function CreateRequestBody(bodyReq: JsonSchema): esb.RequestBodySearch {
   AddQueryMatchFilter(bodyReq);
   AddQueryPagingFilter(bodyReq);
