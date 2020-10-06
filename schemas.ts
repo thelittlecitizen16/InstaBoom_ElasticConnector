@@ -8,21 +8,23 @@ const schemas = {
             size: Joi.number().required()
         }),
         fields: Joi.array().min(1).items(Joi.string()).required(),
-        dateRange: Joi.object().keys({
-            endDate: Joi.date(),
-            startDate: Joi.date()
+        range: Joi.object().min(1).keys({
+            date: Joi.object().min(1).keys({
+                endDate: Joi.date(),
+                startDate: Joi.date()
+            })
         }),
-        sort: Joi.object().keys({
-            dateType: Joi.valid(...['createdDate', 'updateDate']),
+        sort: Joi.object().min(1).keys({
+            dateType: Joi.valid(...['createdAt ', 'updatedAt']),
             order:  Joi.valid(...['desc', 'asc'])
         }),
-        analytics: Joi.object().keys({
+        analytics: Joi.object().min(1).keys({
             hashedId:Joi.valid(...['have', 'notHave', 'ignore']),
             carRecognition: Joi.valid(...['have', 'notHave', 'ignore']),
             withLpr: Joi.valid(...['have', 'notHave', 'ignore']),
             withoutLpr: Joi.valid(...['have', 'notHave', 'ignore'])
         }),
-        match: Joi.object().keys({
+        match: Joi.object().min(1).keys({
             SensorId: Joi.array().items(Joi.string()),
             cameraMode: Joi.array().items(Joi.valid(...['P1', 'P2', 'IR'])),
             hashedId: Joi.array().items(Joi.string()),
