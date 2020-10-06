@@ -1,16 +1,18 @@
 import express = require('express');
 const app: express.Application = express();
 const port = 8000
-import {CreateRequestBody, Try} from './queryControllers/elasticQueryConverter'
+import {CreateRequestBody} from './queryControllers/elasticQueryConverter'
+import {SearchElasticQuery} from './elasticConnector'
 
 
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(require('./router'));
-let bodyReq = { "match": { "lpr": ["6455196"] } };
 
-CreateRequestBody(bodyReq);//.catch(console.log);
-Try();
+let bodyReq = { "fields":["image", "entityId", "metadata" ,"algorithmName","algorithmResults", "updatedAt"], 
+"paging":{"from":0,"size":40}};
+
+SearchElasticQuery(CreateRequestBody(bodyReq));
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   })
