@@ -9,8 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(require('./router'));
 
-let bodyReq = { "fields":["image", "entityId", "metadata" ,"algorithmName","algorithmResults", "updatedAt"], 
-"paging":{"from":0,"size":40}};
+let bodyReq = { "match":{"lpr":["6455196","2352432"],"sensorId":["122","66"]}, "fields":["image", "entityId", "metadata" ,"algorithmName","algorithmResults", "updatedAt"], 
+"paging":{"from":0,"size":10}, "range":{"date":{"start":"2020-06-13T15:27:12"}}};
 
 SearchElasticQuery(CreateRequestBody(bodyReq));
 app.listen(port, () => {
