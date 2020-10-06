@@ -1,49 +1,55 @@
 
 import esb = require('elastic-builder');
-import { string } from 'joi';
-var elasticsearch = require('elasticsearch')
+import {JsonSchema} from './jsonSchema'
 var dataConverter = require('./elasticQueryDataConverter');
+var elasticFields = require('./elasticFieldDataConverter');
 
-var client = new elasticsearch.Client({
-  hosts: ['http://elastic:elkpass123456!@10.1.0.103:9200'],
-  log: 'trace',
-  apiVersion: '7.x'
-})
-
-const requestBody = esb.requestBodySearch()
-  .query(esb.matchQuery('body', 'elasticsearch'));
-
+const requestBody = esb.requestBodySearch();
 let boolQuery = esb.boolQuery();
-boolQuery.must(esb.matchQuery('entityId', 'dfff-8d6f-461f-b9f5-28a30717c4aa'));
-console.log(boolQuery);
 
- interface LabeledValue {
-  "match": { "lpr": string[] } 
-}
-
-function CreateRequestBody(bodyReq: LabeledValue) {
-  Object.entries(bodyReq["match"]).forEach(
+function CreateRequestBody(bodyReq: JsonSchema) : esb.RequestBodySearch {
+  bodyReq["match"] !== undefined ? Object.entries(bodyReq["match"]!).forEach(
     ([key, value]) => {
       console.log(key, value)
-      boolQuery.must(esb.matchQuery(dataConverter.match[key], value[0]));
+      boolQuery.must(esb.matchQuery(dataConverter.match[key], value![0]));
+    }
+  ) : undefined;
+
+  Object.entries(bodyReq["paging"]!).forEach(
+    ([key, value]) => {
+      key === "from" ? requestBody.from(value) : undefined;
+      key === "size" ? requestBody.size(value) : undefined;
     }
   );
 
-  console.log(boolQuery);
-}
-
-
-
-async function Try() {
-  client.search({
-    index: 'test_index_photos',
-    body: requestBody.toJSON()
-  }).then(function (resp: any) {
-    console.log(resp);
-  }, function (err: { message: any; }) {
-    console.trace(err.message);
+  let sourceIncludes: string[] = [];
+  bodyReq["fields"].forEach(element => {
+    elasticFields[element] ? sourceIncludes.push(elasticFields[element]) : undefined;
   });
+  requestBody.source({ "includes": sourceIncludes, "excludes": ["algorithms.*.results.feature", "algorithms.*.results.landmarks"] })
+
+  bodyReq["range"] !== undefined ? Object.entries(bodyReq["range"]!["date"]!).forEach(
+    ([key, value]) => {
+      key === "start" ? boolQuery.must(esb.rangeQuery('createdAt').gte(value!)) : undefined;
+      key === "end" ? boolQuery.must(esb.rangeQuery('createdAt').lte(value!)) : undefined;
+    }
+  ) : undefined;
+
+  if (bodyReq["sort"] !== undefined) {
+    let dateType;
+    let order;
+    Object.entries(bodyReq["sort"]!).forEach(
+      ([key, value]) => {
+        key === "dateType" ? dateType = value : undefined;
+        key === "order" ? order = value : undefined;
+      }
+    );
+    requestBody.sort(esb.sort(dateType, order))
+  }
+
+  requestBody.query(boolQuery);
+
+  return requestBody;
 }
 
-
-export { CreateRequestBody ,Try }
+export { CreateRequestBody }

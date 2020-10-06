@@ -10,10 +10,6 @@
         "carModel": "algorithms.CarRecognition.predictions.model",
         "carColor": "algorithms.CarRecognition.color"
     },
-    "range": {
-        "date": "createdAt"
-    },
-
     "sort": {
         "createdDate": "createdAt",
         "updatedDate": "updatedAt"
