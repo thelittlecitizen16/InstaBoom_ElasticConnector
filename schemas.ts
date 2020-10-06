@@ -46,7 +46,7 @@ const schemasMiddleware = () => {
             next()
         } else {
             const errorsDetail = error?.details.map(i => i.message);
-            res.status(422).json({
+            res.status(400).json({
                 status: false,
                 error: errorsDetail
             })

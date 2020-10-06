@@ -10,13 +10,11 @@ router.post('/search',schemasMiddleware(), (req, res) => {
         SearchElasticQuery(CreateRequestBody(req.body))
         .then(function (resp: any) {
             res.json(resp.hits.hits);
-            return  resp.hits.hits;
           }, function (err: { message: any; }) {
-            res.json(err.message);
-            return err.message;
+            res.status(404).json(err.message);
           });
     } catch (error) {
-        res.status(400).send();
+        res.status(500).send();
     }
 });
 
