@@ -3,6 +3,6 @@
     "entityId": "entityId",
     "metadata": "metadata",
     "updatedAt": "updatedAt",
-    "algorithmName" : "algoritm.*.algorithmName",
-    "algorithmResult" : "algoritm.*.results"
+    "algorithmName" : "algorithms.*.algorithmName",
+    "algorithmResults" : "algorithms.*.results"
 }

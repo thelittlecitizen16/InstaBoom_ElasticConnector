@@ -8,32 +8,34 @@ const schemas = {
             size: Joi.number().required()
         }),
         fields: Joi.array().min(1).items(Joi.string()).required(),
-        dateRange: Joi.object().keys({
-            endDate: Joi.date(),
-            startDate: Joi.date()
+        range: Joi.object().min(1).keys({
+            date: Joi.object().min(1).keys({
+                start: Joi.date(),
+                end: Joi.date()
+            })
         }),
-        sort: Joi.object().keys({
-            dateType: Joi.valid(...['createdDate', 'updateDate']),
-            order:  Joi.valid(...['desc', 'asc'])
+        sort: Joi.object().min(1).keys({
+            dateType: Joi.valid(...['createdAt ', 'updatedAt']),
+            order: Joi.valid(...['desc', 'asc'])
         }),
-        analytics: Joi.object().keys({
-            hashedId:Joi.valid(...['have', 'notHave', 'ignore']),
+        analytics: Joi.object().min(1).keys({
+            hashedId: Joi.valid(...['have', 'notHave', 'ignore']),
             carRecognition: Joi.valid(...['have', 'notHave', 'ignore']),
             withLpr: Joi.valid(...['have', 'notHave', 'ignore']),
             withoutLpr: Joi.valid(...['have', 'notHave', 'ignore'])
         }),
-        match: Joi.object().keys({
-            SensorId: Joi.array().items(Joi.string()),
+        match: Joi.object().min(1).keys({
+            sensorId: Joi.array().items(Joi.string()),
             cameraMode: Joi.array().items(Joi.valid(...['P1', 'P2', 'IR'])),
             hashedId: Joi.array().items(Joi.string()),
             lpr: Joi.array().items(Joi.string()),
             pictureId: Joi.array().items(Joi.string()),
-            manufacturer:  Joi.array().items(Joi.string()),
-            model:  Joi.array().items(Joi.string()),
-            color:  Joi.array().items(Joi.string()),
-            year:  Joi.array().items(Joi.string()),
+            manufacturer: Joi.array().items(Joi.string()),
+            model: Joi.array().items(Joi.string()),
+            color: Joi.array().items(Joi.string()),
+            year: Joi.array().items(Joi.string()),
         })
-})
+    })
 };
 
 const schemasMiddleware = () => {
@@ -44,7 +46,7 @@ const schemasMiddleware = () => {
             next()
         } else {
             const errorsDetail = error?.details.map(i => i.message);
-            res.status(422).json({
+            res.status(400).json({
                 status: false,
                 error: errorsDetail
             })
@@ -52,4 +54,4 @@ const schemasMiddleware = () => {
     }
 }
 
-export {schemasMiddleware}
+export { schemasMiddleware }
