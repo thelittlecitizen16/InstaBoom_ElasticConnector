@@ -61,6 +61,15 @@ function AddQuerySortFilter(bodyReq: JsonSchema, requestBody: esb.RequestBodySea
   }
 }
 
+function AddQueryAnalyticsFilter(bodyReq: JsonSchema, boolQuery: esb.BoolQuery) {
+  bodyReq["analytics"] !== undefined ? Object.entries(bodyReq["analytics"]!).forEach(
+    ([key, value]) => {
+      value === "have" ? boolQuery.must(esb.existsQuery(dataConverter.analytics[key])) : undefined;
+      value === "notHave" ? boolQuery.mustNot(esb.existsQuery(dataConverter.analytics[key])) : undefined;
+    }
+  ) : undefined;
+}
+
 function CreateRequestBody(bodyReq: JsonSchema): esb.RequestBodySearch {
   const requestBody = esb.requestBodySearch();
   let boolQuery = esb.boolQuery();
@@ -69,8 +78,8 @@ function CreateRequestBody(bodyReq: JsonSchema): esb.RequestBodySearch {
   AddQueryReturnFields(bodyReq, requestBody);
   AddQueryRangeFilter(bodyReq, boolQuery);
   AddQuerySortFilter(bodyReq, requestBody);
+  AddQueryAnalyticsFilter(bodyReq, boolQuery);
   requestBody.query(boolQuery);
-
   return requestBody;
 }
 
