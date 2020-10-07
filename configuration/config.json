@@ -6,5 +6,8 @@
     },
     "query":{
         "excludes" :["algorithms.*.results.feature", "algorithms.*.results.landmarks"]
+    },
+    "server":{
+        "port": 8081
     }
 }
