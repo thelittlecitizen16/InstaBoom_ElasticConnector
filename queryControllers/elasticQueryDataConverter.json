@@ -3,7 +3,7 @@
         "lpr" : "algorithms.lpr.results.predictions.text",
         "cameraMode" : "metadata.CameraMode",
         "sensorId" : "metadata.SensorId",
-        "hashedId" : "",
+        "hashedId" : "algorithms.faces.results.hashedId",
         "pictureId": "entityId",
         "carManufacturer" : "algorithms.CarRecognition.predictions.manufacturer",
         "carYear": "algorithms.CarRecognition.predictions.year",
@@ -11,9 +11,8 @@
         "carColor": "algorithms.CarRecognition.color"
     },
     "analytics" : {
-        "hashedId" : {"field" : ""},
-        "carRecognition" : {"field" : "algorithms.CarRecognition"},
-        "withLpr" : {"field" : "algorithms.lpr"},
-        "withoutLpr" : {"field" : "algorithms.lpr"}
-    }
+        "hashedId" : "algorithms.faces.results.hashedId",
+        "carRecognition" : "algorithms.Car Recognition.results.boundingBox",
+        "withLpr" : "algorithms.lpr.results.boundingBox"
+        }
 }

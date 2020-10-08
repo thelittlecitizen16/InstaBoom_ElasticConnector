@@ -5,10 +5,9 @@ var dataConverter = require('./elasticQueryDataConverter');
 var elasticFields = require('./elasticFieldDataConverter');
 var config = require('../configuration/config.json')
 
-const requestBody = esb.requestBodySearch();
-let boolQuery = esb.boolQuery();
 
-function AddQueryMatchFilter(bodyReq: JsonSchema) {
+
+function AddQueryMatchFilter(bodyReq: JsonSchema, boolQuery: esb.BoolQuery) {
   bodyReq["match"] !== undefined ? Object.entries(bodyReq["match"]!).forEach(
     ([key, value]) => {
       let esbQuery: esb.Query[] = new Array();
@@ -20,7 +19,7 @@ function AddQueryMatchFilter(bodyReq: JsonSchema) {
   ) : undefined;
 }
 
-function AddQueryPagingFilter(bodyReq: JsonSchema) {
+function AddQueryPagingFilter(bodyReq: JsonSchema, requestBody: esb.RequestBodySearch) {
   Object.entries(bodyReq["paging"]!).forEach(
     ([key, value]) => {
       key === "from" ? requestBody.from(value) : undefined;
@@ -29,7 +28,7 @@ function AddQueryPagingFilter(bodyReq: JsonSchema) {
   );
 }
 
-function AddQueryReturnFields(bodyReq: JsonSchema) {
+function AddQueryReturnFields(bodyReq: JsonSchema, requestBody: esb.RequestBodySearch) {
   let sourceIncludes: string[] = [];
 
   bodyReq["fields"].forEach(element => {
@@ -39,7 +38,7 @@ function AddQueryReturnFields(bodyReq: JsonSchema) {
   requestBody.source({ "includes": sourceIncludes, "excludes": config.query.excludes });
 }
 
-function AddQueryRangeFilter(bodyReq: JsonSchema) {
+function AddQueryRangeFilter(bodyReq: JsonSchema, boolQuery: esb.BoolQuery) {
   bodyReq["range"] !== undefined ? Object.entries(bodyReq["range"]!["date"]!).forEach(
     ([key, value]) => {
       key === "start" ? boolQuery.must(esb.rangeQuery('createdAt').gte(value!)) : undefined;
@@ -48,7 +47,7 @@ function AddQueryRangeFilter(bodyReq: JsonSchema) {
   ) : undefined;
 }
 
-function AddQuerySortFilter(bodyReq: JsonSchema) {
+function AddQuerySortFilter(bodyReq: JsonSchema, requestBody: esb.RequestBodySearch) {
   if (bodyReq["sort"] !== undefined) {
     let dateType;
     let order;
@@ -62,14 +61,25 @@ function AddQuerySortFilter(bodyReq: JsonSchema) {
   }
 }
 
-function CreateRequestBody(bodyReq: JsonSchema): esb.RequestBodySearch {
-  AddQueryMatchFilter(bodyReq);
-  AddQueryPagingFilter(bodyReq);
-  AddQueryReturnFields(bodyReq);
-  AddQueryRangeFilter(bodyReq);
-  AddQuerySortFilter(bodyReq);
-  requestBody.query(boolQuery);
+function AddQueryAnalyticsFilter(bodyReq: JsonSchema, boolQuery: esb.BoolQuery) {
+  bodyReq["analytics"] !== undefined ? Object.entries(bodyReq["analytics"]!).forEach(
+    ([key, value]) => {
+      value === "have" ? boolQuery.must(esb.existsQuery(dataConverter.analytics[key])) : undefined;
+      value === "notHave" ? boolQuery.mustNot(esb.existsQuery(dataConverter.analytics[key])) : undefined;
+    }
+  ) : undefined;
+}
 
+function CreateRequestBody(bodyReq: JsonSchema): esb.RequestBodySearch {
+  const requestBody = esb.requestBodySearch();
+  let boolQuery = esb.boolQuery();
+  AddQueryMatchFilter(bodyReq, boolQuery);
+  AddQueryPagingFilter(bodyReq, requestBody);
+  AddQueryReturnFields(bodyReq, requestBody);
+  AddQueryRangeFilter(bodyReq, boolQuery);
+  AddQuerySortFilter(bodyReq, requestBody);
+  AddQueryAnalyticsFilter(bodyReq, boolQuery);
+  requestBody.query(boolQuery);
   return requestBody;
 }
 

@@ -14,7 +14,7 @@ router.post('/search', schemasMiddleware(), (req, res) => {
     try {
         SearchElasticQuery(CreateRequestBody(req.body))
             .then(function (resp: any) {
-                res.json(resp.hits.hits);
+                res.json(resp.hits);
             }, function (err: { message: any; }) {
                 res.status(404).json(CreateError(err.message))
             });
