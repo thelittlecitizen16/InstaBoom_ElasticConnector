@@ -1,0 +1,13 @@
+{
+    "elastic":{
+        "hosts" : "http://elastic:elkpass123456!@10.1.0.103:9200",
+        "apiVersion": "7.x",
+        "index" : "test_index_photos"
+    },
+    "query":{
+        "excludes" :["algorithms.*.results.feature", "algorithms.*.results.landmarks"]
+    },
+    "server":{
+        "port": 8081
+    }
+}

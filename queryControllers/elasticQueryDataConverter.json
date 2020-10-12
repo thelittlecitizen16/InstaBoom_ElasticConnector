@@ -1,0 +1,18 @@
+{
+    "match" : {
+        "lpr" : "algorithms.lpr.results.predictions.text",
+        "cameraMode" : "metadata.CameraMode",
+        "sensorId" : "metadata.SensorId",
+        "hashedId" : "algorithms.faces.results.hashedId",
+        "pictureId": "entityId",
+        "carManufacturer" : "algorithms.CarRecognition.predictions.manufacturer",
+        "carYear": "algorithms.CarRecognition.predictions.year",
+        "carModel": "algorithms.CarRecognition.predictions.model",
+        "carColor": "algorithms.CarRecognition.color"
+    },
+    "analytics" : {
+        "hashedId" : "algorithms.faces.results.hashedId",
+        "carRecognition" : "algorithms.Car Recognition.results.boundingBox",
+        "withLpr" : "algorithms.lpr.results.boundingBox"
+        }
+}
