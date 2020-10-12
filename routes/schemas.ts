@@ -15,7 +15,7 @@ const schemas = {
             })
         }),
         sort: Joi.object().min(1).keys({
-            dateType: Joi.valid(...['createdAt ', 'updatedAt']),
+            dateType: Joi.valid(...['createdAt', 'updatedAt']),
             order: Joi.valid(...['desc', 'asc'])
         }),
         analytics: Joi.object().min(1).keys({
