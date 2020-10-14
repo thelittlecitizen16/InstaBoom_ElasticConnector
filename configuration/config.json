@@ -9,5 +9,6 @@
     },
     "server":{
         "port": 8081
-    }
+    },
+    "corsAllowed": ["http://localhost:3000"]
 }
