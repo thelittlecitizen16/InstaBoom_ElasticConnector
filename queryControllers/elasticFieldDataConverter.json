@@ -4,5 +4,6 @@
     "metadata": "metadata",
     "updatedAt": "updatedAt",
     "algorithmName" : "algorithms.*.algorithmName",
-    "algorithmResults" : "algorithms.*.results"
+    "algorithmResults" : "algorithms.*.results",
+    "ttl": "ttl"
 }
